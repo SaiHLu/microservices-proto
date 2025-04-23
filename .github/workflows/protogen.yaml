@@ -1,8 +1,6 @@
 name: "Protocol Buffer Go Stubs Generation"
 on:
-  push:
-    branches:
-      - '*'
+  workflow_dispatch:
 jobs:
   protoc:
     name: "Generate"
