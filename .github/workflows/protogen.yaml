@@ -32,7 +32,7 @@ jobs:
       - name: Initialize Go modules
         run: |
           cd golang
-          for service in order product shipping; do
+          for service in order payment shipping; do
             cd $service
             go mod init github.com/SaiHLu/microservices-proto/golang/$service
             go mod tidy
