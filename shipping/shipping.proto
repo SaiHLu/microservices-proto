@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package shipping;
+
 option go_package = "github.com/SaiHLu/microservices/shipping";
 
 message TestRequest {

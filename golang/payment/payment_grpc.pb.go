@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Payment_Test_FullMethodName = "/Payment/Test"
+	Payment_Test_FullMethodName = "/payment.Payment/Test"
 )
 
 // PaymentClient is the client API for Payment service.
@@ -108,7 +108,7 @@ func _Payment_Test_Handler(srv interface{}, ctx context.Context, dec func(interf
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Payment_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "Payment",
+	ServiceName: "payment.Payment",
 	HandlerType: (*PaymentServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
