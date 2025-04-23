@@ -16,8 +16,8 @@ go mod init \
 github.com/SaiHLu/microservices-proto/golang/${SERVICE_NAME} || true
 go mod tidy
 cd ../..
-git config --global user.email "huseyinbabal88@gmail.com"
-git config --global user.name "Huseyin BABAL"
+git config --global user.email "saisailuhlaing@gmail.com"
+git config --global user.name "SaiHLu"
 git add . && git commit -am "proto update" || true
 git tag -fa golang/${SERVICE_NAME}/${RELEASE_VERSION} \
   -m "golang/${SERVICE_NAME}/${RELEASE_VERSION}"
