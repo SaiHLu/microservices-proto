@@ -1,34 +1,29 @@
-name: "Protocol Buffers Go Stubs Generation"
+name: "Protocol Buffer Go Stubs Generation"
 on:
   push:
-    tags: 
-      - v**
-permissions: 
-  contents: write
-  actions: write
+    branches:
+      - '*'
 jobs:
   protoc:
     name: "Generate"
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        service: ["order", "payment", "shipping"]
     steps:
       - name: Install Go
         uses: actions/setup-go@v5
         with:
-          go-version: "1.22"
-      - name: Setup Project
-        uses: actions/checkout@v4
-      - name: Extract Release Version
+          go-version: '1.22'
+      - uses: actions/checkout@v4
+      - name: "Generate for Golang"
         run: |
-          echo "RELEASE VERSION: ${GITHUB_REF#refs/*/}"
-          echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      - name: Generate For Golang
-        shell: bash
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
-        run: |
-          echo "workspace: ${GITHUB_WORKSPACE}"
-          chmod +x "${GITHUB_WORKSPACE}/run.sh"                           
-          ./run.sh ${{ matrix.service}} ${{ env.RELEASE_VERSION }} 
+          sudo apt-get install -y protobuf-compiler golang-goprotobuf-dev
+          go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+          go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+          protoc --go_out=./golang --go_opt=paths=source_relative --go-grpc_out=./golang --go-grpc_opt=paths=source_relative ./**/*.proto
+          cd golang
+          go mod init github.com/SaiHLu/microservices-proto
+          go mod tidy
+          git config --global user.email "saisailuhlaing@gmail.com"
+          git config --global user.name "SaiHLu"
+          git add .
+          git commit -am "proto update"
+          git push origin main
