@@ -5,7 +5,6 @@ on:
       - v**
 permissions: 
   contents: write
-  workflows: write
 jobs:
   protoc:
     name: "Generate"
@@ -27,7 +26,7 @@ jobs:
       - name: Generate For Golang
         shell: bash
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.PAT }}
         run: |
           echo "Token first 4 chars: ${GITHUB_TOKEN:0:4}..."
           echo "Remote URL: $(git remote get-url origin | sed 's/x-access-token:[^@]*@/x-access-token:****@/')"
