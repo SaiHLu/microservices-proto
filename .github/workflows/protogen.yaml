@@ -10,34 +10,43 @@ jobs:
   protoc:
     name: "Generate"
     runs-on: ubuntu-latest
-    # strategy:
-    #   matrix:
-    #     service: ['order', 'product', 'shipping']
     steps:
       - name: Install Go
         uses: actions/setup-go@v5
         with:
           go-version: '1.22'
-      - uses: actions/checkout@v4
-      - name: "Generate for Golang"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # SERVICE_NAME: ${{ matrix.service }}
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install protoc and tools
         run: |
-          sudo apt-get install -y protobuf-compiler golang-goprotobuf-dev
-          go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
-          go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-          # mkdir -p golang/${{ matrix.service }}
+          sudo apt-get update
+          sudo apt-get install -y protobuf-compiler
+          go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.32.0
+          go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.3.0
+          echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
+      - name: Generate protobuf files
+        run: |
+          # Create output directory
+          mkdir -p golang
           protoc --go_out=./golang --go_opt=paths=source_relative --go-grpc_out=./golang --go-grpc_opt=paths=source_relative ./**/*.proto
-          # cd golang/${{ matrix.service }}
-          # go mod init github.com/SaiHLu/microservices-proto/${{ matrix.service }}
-          # go mod tidy
-          # cd ../..
-          # git add .
+          - name: Initialize Go modules
+          run: |
+            cd golang
+            for service in order product shipping; do
+              cd $service
+              go mod init github.com/SaiHLu/microservices-proto/golang/$service
+              go mod tidy
+              cd ..
+            done
+            cd ..
+        
+      - name: Commit and tag changes
+        run: |
           git config --global user.email "saisailuhlaing@gmail.com"
           git config --global user.name "SaiHLu"
-          git commit -am "proto update"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/SaiHLu/microservices-proto.git
+          git add .
+          git commit -m "Generated protobuf files for all services"
           echo "TAG_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-          git tag $TAG_VERSION
+          git tag -a $TAG_VERSION -m "Release $TAG_VERSION"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/SaiHLu/microservices-proto.git
           git push origin $TAG_VERSION
