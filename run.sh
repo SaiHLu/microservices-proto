@@ -22,5 +22,5 @@ git add golang/${SERVICE_NAME}/*
 git commit -am "proto update" || true
 git tag -fa golang/${SERVICE_NAME}/${RELEASE_VERSION} \
   -m "golang/${SERVICE_NAME}/${RELEASE_VERSION}"
-git remote set-url origin "https://SaiHLu:${GITHUB_TOKEN}@github.com/SaiHLu/microservices-proto.git"
+git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
 git push origin refs/tags/golang/${SERVICE_NAME}/${RELEASE_VERSION}
