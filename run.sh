@@ -19,7 +19,6 @@ cd ../..
 git config --global user.email "saisailuhlaing@gmail.com"
 git config --global user.name "SaiHLu"
 git add golang/${SERVICE_NAME}/* 
-git reset -- .github/workflows/*  # Ensure workflow files are not included
 git commit -am "proto update" || true
 git tag -fa golang/${SERVICE_NAME}/${RELEASE_VERSION} \
   -m "golang/${SERVICE_NAME}/${RELEASE_VERSION}"
