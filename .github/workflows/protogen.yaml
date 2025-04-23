@@ -24,10 +24,15 @@ jobs:
         run: |
           echo "RELEASE VERSION: ${GITHUB_REF#refs/*/}"
           echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Debug Permissions
+        run: |
+          echo "Token permissions:"
+          curl -s -H "Authorization: token ${{ secrets.PAT }}" \
+          https://api.github.com/repos/SaiHLu/microservices-proto | jq .permissions
       - name: Generate For Golang
         shell: bash
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PAT }}
         run: |
           echo "workspace: ${GITHUB_WORKSPACE}"
           chmod +x "${GITHUB_WORKSPACE}/run.sh"                           
