@@ -1,8 +1,5 @@
 name: "Protocol Buffer Go Stubs Generation"
 on:
-  push:
-    tags:
-      - 'v*'
   workflow_dispatch:
 permissions: 
   contents: write
@@ -39,33 +36,11 @@ jobs:
             cd ..
           done
           cd ..
-      - name: Commit and tag changes
+      - name: Commit and push
         run: |
-          # Configure git
           git config --global user.email "saisailuhlaing@gmail.com"
           git config --global user.name "SaiHLu"
-          
-          # Get the default branch name (main/master)
-          DEFAULT_BRANCH=$(git remote show origin | grep 'HEAD branch' | cut -d' ' -f5)
-          
-          # Checkout to the default branch
-          git checkout $DEFAULT_BRANCH
-          
-          # Add and commit changes
           git add .
           git commit -m "Generated protobuf files for all services"
-          
-          # Get tag version (for tag triggers)
-          if [[ $GITHUB_REF == refs/tags/* ]]; then
-            TAG_VERSION=${GITHUB_REF#refs/tags/}
-          else
-            # For non-tag triggers, generate a timestamp-based tag
-            TAG_VERSION="dev-$(date +%Y%m%d%H%M%S)"
-          fi
-          
-          echo "TAG_VERSION=$TAG_VERSION" >> $GITHUB_ENV
-          
-          # Create and push tag
-          git tag $TAG_VERSION
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/SaiHLu/microservices-proto.git
-          git push origin $DEFAULT_BRANCH $TAG_VERSION
+          git push origin main
