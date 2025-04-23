@@ -24,7 +24,7 @@ jobs:
       - name: Generate For Golang
         shell: bash
         env:
-          GITHUB_WORKSPACE: ${{ secrets.PAT }}
+          GITHUB_TOKEN: ${{ secrets.PAT }}
         run: |
           echo "workspace: ${GITHUB_WORKSPACE}"
           chmod +x "${GITHUB_WORKSPACE}/run.sh"                           
