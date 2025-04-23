@@ -19,14 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Payment_Test_FullMethodName = "/payment.Payment/Test"
+	Payment_Create_FullMethodName = "/payment.Payment/Create"
 )
 
 // PaymentClient is the client API for Payment service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PaymentClient interface {
-	Test(ctx context.Context, in *TestRequest, opts ...grpc.CallOption) (*TestResponse, error)
+	Create(ctx context.Context, in *CreatePaymentRequest, opts ...grpc.CallOption) (*CreatePaymentResponse, error)
 }
 
 type paymentClient struct {
@@ -37,10 +37,10 @@ func NewPaymentClient(cc grpc.ClientConnInterface) PaymentClient {
 	return &paymentClient{cc}
 }
 
-func (c *paymentClient) Test(ctx context.Context, in *TestRequest, opts ...grpc.CallOption) (*TestResponse, error) {
+func (c *paymentClient) Create(ctx context.Context, in *CreatePaymentRequest, opts ...grpc.CallOption) (*CreatePaymentResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(TestResponse)
-	err := c.cc.Invoke(ctx, Payment_Test_FullMethodName, in, out, cOpts...)
+	out := new(CreatePaymentResponse)
+	err := c.cc.Invoke(ctx, Payment_Create_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func (c *paymentClient) Test(ctx context.Context, in *TestRequest, opts ...grpc.
 // All implementations must embed UnimplementedPaymentServer
 // for forward compatibility.
 type PaymentServer interface {
-	Test(context.Context, *TestRequest) (*TestResponse, error)
+	Create(context.Context, *CreatePaymentRequest) (*CreatePaymentResponse, error)
 	mustEmbedUnimplementedPaymentServer()
 }
 
@@ -62,8 +62,8 @@ type PaymentServer interface {
 // pointer dereference when methods are called.
 type UnimplementedPaymentServer struct{}
 
-func (UnimplementedPaymentServer) Test(context.Context, *TestRequest) (*TestResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Test not implemented")
+func (UnimplementedPaymentServer) Create(context.Context, *CreatePaymentRequest) (*CreatePaymentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
 func (UnimplementedPaymentServer) mustEmbedUnimplementedPaymentServer() {}
 func (UnimplementedPaymentServer) testEmbeddedByValue()                 {}
@@ -86,20 +86,20 @@ func RegisterPaymentServer(s grpc.ServiceRegistrar, srv PaymentServer) {
 	s.RegisterService(&Payment_ServiceDesc, srv)
 }
 
-func _Payment_Test_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TestRequest)
+func _Payment_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreatePaymentRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PaymentServer).Test(ctx, in)
+		return srv.(PaymentServer).Create(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Payment_Test_FullMethodName,
+		FullMethod: Payment_Create_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PaymentServer).Test(ctx, req.(*TestRequest))
+		return srv.(PaymentServer).Create(ctx, req.(*CreatePaymentRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -112,8 +112,8 @@ var Payment_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*PaymentServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Test",
-			Handler:    _Payment_Test_Handler,
+			MethodName: "Create",
+			Handler:    _Payment_Create_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

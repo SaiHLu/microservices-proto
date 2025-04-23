@@ -21,27 +21,27 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type TestRequest struct {
+type CreateShippingRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Address       string                 `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *TestRequest) Reset() {
-	*x = TestRequest{}
+func (x *CreateShippingRequest) Reset() {
+	*x = CreateShippingRequest{}
 	mi := &file_shipping_shipping_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *TestRequest) String() string {
+func (x *CreateShippingRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*TestRequest) ProtoMessage() {}
+func (*CreateShippingRequest) ProtoMessage() {}
 
-func (x *TestRequest) ProtoReflect() protoreflect.Message {
+func (x *CreateShippingRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_shipping_shipping_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -53,39 +53,38 @@ func (x *TestRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use TestRequest.ProtoReflect.Descriptor instead.
-func (*TestRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateShippingRequest.ProtoReflect.Descriptor instead.
+func (*CreateShippingRequest) Descriptor() ([]byte, []int) {
 	return file_shipping_shipping_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *TestRequest) GetName() string {
+func (x *CreateShippingRequest) GetAddress() string {
 	if x != nil {
-		return x.Name
+		return x.Address
 	}
 	return ""
 }
 
-type TestResponse struct {
+type CreateShippingResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Message       string                 `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *TestResponse) Reset() {
-	*x = TestResponse{}
+func (x *CreateShippingResponse) Reset() {
+	*x = CreateShippingResponse{}
 	mi := &file_shipping_shipping_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *TestResponse) String() string {
+func (x *CreateShippingResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*TestResponse) ProtoMessage() {}
+func (*CreateShippingResponse) ProtoMessage() {}
 
-func (x *TestResponse) ProtoReflect() protoreflect.Message {
+func (x *CreateShippingResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_shipping_shipping_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -97,29 +96,21 @@ func (x *TestResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use TestResponse.ProtoReflect.Descriptor instead.
-func (*TestResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateShippingResponse.ProtoReflect.Descriptor instead.
+func (*CreateShippingResponse) Descriptor() ([]byte, []int) {
 	return file_shipping_shipping_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *TestResponse) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
 }
 
 var File_shipping_shipping_proto protoreflect.FileDescriptor
 
 const file_shipping_shipping_proto_rawDesc = "" +
 	"\n" +
-	"\x17shipping/shipping.proto\x12\bshipping\"!\n" +
-	"\vTestRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\"(\n" +
-	"\fTestResponse\x12\x18\n" +
-	"\amessage\x18\x01 \x01(\tR\amessage2A\n" +
-	"\bShipping\x125\n" +
-	"\x04Test\x12\x15.shipping.TestRequest\x1a\x16.shipping.TestResponseB*Z(github.com/SaiHLu/microservices/shippingb\x06proto3"
+	"\x17shipping/shipping.proto\x12\bshipping\"1\n" +
+	"\x15CreateShippingRequest\x12\x18\n" +
+	"\aaddress\x18\x01 \x01(\tR\aaddress\"\x18\n" +
+	"\x16CreateShippingResponse2Y\n" +
+	"\bShipping\x12M\n" +
+	"\x06Create\x12\x1f.shipping.CreateShippingRequest\x1a .shipping.CreateShippingResponse\"\x00B*Z(github.com/SaiHLu/microservices/shippingb\x06proto3"
 
 var (
 	file_shipping_shipping_proto_rawDescOnce sync.Once
@@ -135,12 +126,12 @@ func file_shipping_shipping_proto_rawDescGZIP() []byte {
 
 var file_shipping_shipping_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_shipping_shipping_proto_goTypes = []any{
-	(*TestRequest)(nil),  // 0: shipping.TestRequest
-	(*TestResponse)(nil), // 1: shipping.TestResponse
+	(*CreateShippingRequest)(nil),  // 0: shipping.CreateShippingRequest
+	(*CreateShippingResponse)(nil), // 1: shipping.CreateShippingResponse
 }
 var file_shipping_shipping_proto_depIdxs = []int32{
-	0, // 0: shipping.Shipping.Test:input_type -> shipping.TestRequest
-	1, // 1: shipping.Shipping.Test:output_type -> shipping.TestResponse
+	0, // 0: shipping.Shipping.Create:input_type -> shipping.CreateShippingRequest
+	1, // 1: shipping.Shipping.Create:output_type -> shipping.CreateShippingResponse
 	1, // [1:2] is the sub-list for method output_type
 	0, // [0:1] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name

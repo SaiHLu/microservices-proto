@@ -19,14 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Shipping_Test_FullMethodName = "/shipping.Shipping/Test"
+	Shipping_Create_FullMethodName = "/shipping.Shipping/Create"
 )
 
 // ShippingClient is the client API for Shipping service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ShippingClient interface {
-	Test(ctx context.Context, in *TestRequest, opts ...grpc.CallOption) (*TestResponse, error)
+	Create(ctx context.Context, in *CreateShippingRequest, opts ...grpc.CallOption) (*CreateShippingResponse, error)
 }
 
 type shippingClient struct {
@@ -37,10 +37,10 @@ func NewShippingClient(cc grpc.ClientConnInterface) ShippingClient {
 	return &shippingClient{cc}
 }
 
-func (c *shippingClient) Test(ctx context.Context, in *TestRequest, opts ...grpc.CallOption) (*TestResponse, error) {
+func (c *shippingClient) Create(ctx context.Context, in *CreateShippingRequest, opts ...grpc.CallOption) (*CreateShippingResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(TestResponse)
-	err := c.cc.Invoke(ctx, Shipping_Test_FullMethodName, in, out, cOpts...)
+	out := new(CreateShippingResponse)
+	err := c.cc.Invoke(ctx, Shipping_Create_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func (c *shippingClient) Test(ctx context.Context, in *TestRequest, opts ...grpc
 // All implementations must embed UnimplementedShippingServer
 // for forward compatibility.
 type ShippingServer interface {
-	Test(context.Context, *TestRequest) (*TestResponse, error)
+	Create(context.Context, *CreateShippingRequest) (*CreateShippingResponse, error)
 	mustEmbedUnimplementedShippingServer()
 }
 
@@ -62,8 +62,8 @@ type ShippingServer interface {
 // pointer dereference when methods are called.
 type UnimplementedShippingServer struct{}
 
-func (UnimplementedShippingServer) Test(context.Context, *TestRequest) (*TestResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Test not implemented")
+func (UnimplementedShippingServer) Create(context.Context, *CreateShippingRequest) (*CreateShippingResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
 func (UnimplementedShippingServer) mustEmbedUnimplementedShippingServer() {}
 func (UnimplementedShippingServer) testEmbeddedByValue()                  {}
@@ -86,20 +86,20 @@ func RegisterShippingServer(s grpc.ServiceRegistrar, srv ShippingServer) {
 	s.RegisterService(&Shipping_ServiceDesc, srv)
 }
 
-func _Shipping_Test_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TestRequest)
+func _Shipping_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateShippingRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ShippingServer).Test(ctx, in)
+		return srv.(ShippingServer).Create(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Shipping_Test_FullMethodName,
+		FullMethod: Shipping_Create_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ShippingServer).Test(ctx, req.(*TestRequest))
+		return srv.(ShippingServer).Create(ctx, req.(*CreateShippingRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -112,8 +112,8 @@ var Shipping_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*ShippingServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Test",
-			Handler:    _Shipping_Test_Handler,
+			MethodName: "Create",
+			Handler:    _Shipping_Create_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
