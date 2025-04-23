@@ -4,15 +4,17 @@ package payment;
 
 option go_package = "github.com/SaiHLu/microservices/payment";
 
-message TestRequest {
-  string name = 1;
+message CreatePaymentRequest {
+  int64 user_id = 1;
+  int64 order_id = 2;
+  float total_price = 3;
 }
 
-message TestResponse {
-  string message = 1;
-  int32 status = 2;
+message CreatePaymentResponse {
+  int64 payment_id = 1;
+  int64 bill_id = 2;
 }
 
 service Payment {
-  rpc Test(TestRequest) returns (TestResponse);
+  rpc Create(CreatePaymentRequest) returns (CreatePaymentResponse){}
 }

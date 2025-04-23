@@ -4,14 +4,14 @@ package shipping;
 
 option go_package = "github.com/SaiHLu/microservices/shipping";
 
-message TestRequest {
-  string name = 1;
+message CreateShippingRequest {
+  string address = 1;
 }
 
-message TestResponse {
-  string message = 1;
+message CreateShippingResponse {
+
 }
 
 service Shipping {
-  rpc Test(TestRequest) returns (TestResponse);
+  rpc Create(CreateShippingRequest) returns (CreateShippingResponse){}
 }
