@@ -1,6 +1,8 @@
 name: "Protocol Buffer Go Stubs Generation"
 on:
   workflow_dispatch:
+permissions: 
+  contents: write
 jobs:
   protoc:
     name: "Generate"
@@ -12,6 +14,8 @@ jobs:
           go-version: '1.22'
       - uses: actions/checkout@v4
       - name: "Generate for Golang"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           sudo apt-get install -y protobuf-compiler golang-goprotobuf-dev
           go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
@@ -22,4 +26,5 @@ jobs:
           git config --global user.name "SaiHLu"
           git add .
           git commit -am "proto update"
+          git config --remote.origin.url https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/SaiHLu/microservices-proto.git
           git push origin main
