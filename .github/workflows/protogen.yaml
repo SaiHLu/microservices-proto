@@ -1,5 +1,8 @@
 name: "Protocol Buffer Go Stubs Generation"
 on:
+  push:
+    tags:
+      - 'v*'
   workflow_dispatch:
 permissions: 
   contents: write
@@ -7,24 +10,33 @@ jobs:
   protoc:
     name: "Generate"
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: ['order', 'product', 'shipping']
     steps:
       - name: Install Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.22'
+          go-version: '1.23.2'
       - uses: actions/checkout@v4
       - name: "Generate for Golang"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SERVICE_NAME: ${{ matrix.service }}
         run: |
           sudo apt-get install -y protobuf-compiler golang-goprotobuf-dev
           go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
           go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-          mkdir -p golang
+          mkdir -p golang/${{ matrix.service }}
           protoc --go_out=./golang --go_opt=paths=source_relative --go-grpc_out=./golang --go-grpc_opt=paths=source_relative ./**/*.proto
+          cd golang/${{ matrix.service }}
+          go mod init github.com/SaiHLu/microservices-proto/${{ matrix.service }}
+          go mod tidy
+          cd ../..
           git config --global user.email "saisailuhlaing@gmail.com"
           git config --global user.name "SaiHLu"
-          git add .
           git commit -am "proto update"
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/SaiHLu/microservices-proto.git
-          git push origin main
+          echo "TAG_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+          git tag -a $TAG_VERSION -m "Release $TAG_VERSION"
+          git push origin $TAG_VERSION
