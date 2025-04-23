@@ -29,17 +29,16 @@ jobs:
           # Create output directory
           mkdir -p golang
           protoc --go_out=./golang --go_opt=paths=source_relative --go-grpc_out=./golang --go-grpc_opt=paths=source_relative ./**/*.proto
-          - name: Initialize Go modules
-          run: |
-            cd golang
-            for service in order product shipping; do
-              cd $service
-              go mod init github.com/SaiHLu/microservices-proto/golang/$service
-              go mod tidy
-              cd ..
-            done
+      - name: Initialize Go modules
+        run: |
+          cd golang
+          for service in order product shipping; do
+            cd $service
+            go mod init github.com/SaiHLu/microservices-proto/golang/$service
+            go mod tidy
             cd ..
-        
+          done
+          cd ..
       - name: Commit and tag changes
         run: |
           git config --global user.email "saisailuhlaing@gmail.com"
