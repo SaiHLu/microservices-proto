@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package shipping;
 
-option go_package = "github.com/SaiHLu/microservices/shipping";
+option go_package = "github.com/SaiHLu/microservices-proto/shipping";
 
 message CreateShippingRequest {
   string address = 1;

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package order;
 
-option go_package = "github.com/SaiHLu/microservices/order";
+option go_package = "github.com/SaiHLu/microservices-proto/order";
 
 message CreateOrderRequest {
   int64 user_id = 1;
