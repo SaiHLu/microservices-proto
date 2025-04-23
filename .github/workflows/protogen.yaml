@@ -33,6 +33,7 @@ jobs:
           go mod init github.com/SaiHLu/microservices-proto/${{ matrix.service }}
           go mod tidy
           cd ../..
+          git add .
           git config --global user.email "saisailuhlaing@gmail.com"
           git config --global user.name "SaiHLu"
           git commit -am "proto update"
