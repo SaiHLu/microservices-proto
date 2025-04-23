@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option go_package = "github.com/SaiHLu/microservices/shipping";
+
+message TestRequest {
+  string name = 1;
+}
+
+message TestResponse {
+  string message = 1;
+}
+
+service Shipping {
+  rpc Test(TestRequest) returns (TestResponse);
+}

@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option go_package = "github.com/SaiHLu/microservices/payment";
+
+
+message TestRequest {
+  string name = 1;
+}
+
+message TestResponse {
+  string message = 1;
+}
+
+service Payment {
+  rpc Test(TestRequest) returns (TestResponse);
+}
