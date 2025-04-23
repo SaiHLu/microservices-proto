@@ -46,6 +46,6 @@ jobs:
           git add .
           git commit -m "Generated protobuf files for all services"
           echo "TAG_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-          git tag -a $TAG_VERSION -m "Release $TAG_VERSION"
+          git tag $TAG_VERSION
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/SaiHLu/microservices-proto.git
           git push origin $TAG_VERSION
