@@ -26,5 +26,5 @@ jobs:
           git config --global user.name "SaiHLu"
           git add .
           git commit -am "proto update"
-          git config --remote.origin.url https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/SaiHLu/microservices-proto.git
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/SaiHLu/microservices-proto.git
           git push origin main
