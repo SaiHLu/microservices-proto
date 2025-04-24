@@ -36,11 +36,29 @@ jobs:
             cd ..
           done
           cd ..
+      - name: Execute version.go
+        id: version
+        run: |
+          # run the version.go script
+          go run version.go
+          VERSION=$(cat version.txt)
+          echo "Updated version to: $VERSION"
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
       - name: Commit and push
         run: |
           git config --global user.email "saisailuhlaing@gmail.com"
           git config --global user.name "SaiHLu"
+
+          # Add all changes including the version.txt file
           git add .
-          git commit -m "Generated protobuf files for all services"
+
+          # Commit with version in message
+          git commit -m "Generated protobuf files for all services [version: ${{ steps.version.outputs.version }}]"
+
+          # Push to main branch
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/SaiHLu/microservices-proto.git
           git push origin main
+
+          # Create and push tag with the new version
+          git tag -a ${{ steps.version.outputs.version }} -m "Release ${{ steps.version.outputs.version }}"
+          git push origin ${{ steps.version.outputs.version }}
