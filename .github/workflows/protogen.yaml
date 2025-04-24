@@ -39,6 +39,10 @@ jobs:
           git config --global user.email "saisailuhlaing@gmail.com"
           git config --global user.name "SaiHLu"
 
+          # Get default branch name
+          DEFAULT_BRANCH=$(git remote show origin | grep 'HEAD branch' | cut -d' ' -f5)
+          echo "Default branch is: $DEFAULT_BRANCH"
+
           # Add all changes including the version.txt file
           git add .
 
@@ -47,7 +51,7 @@ jobs:
 
           # Push to main branch
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/SaiHLu/microservices-proto.git
-          git push origin main
+          git push origin $DEFAULT_BRANCH
 
           # Create and push tag with the new version
           git tag -a ${{ steps.version.outputs.version }} -m "Release ${{ steps.version.outputs.version }}"
