@@ -26,21 +26,33 @@ jobs:
           # Create output directory
           mkdir -p golang
           protoc --go_out=./golang --go_opt=paths=source_relative --go-grpc_out=./golang --go-grpc_opt=paths=source_relative ./**/*.proto
-      - name: Initialize Go modules
+      - name: Execute version.go
+        id: version
         run: |
-          cd golang
-          for service in order payment shipping; do
-            cd $service
-            go mod init github.com/SaiHLu/microservices-proto/golang/$service
-            go mod tidy
-            cd ..
-          done
-          cd ..
+          # run the version.go script
+          go run version.go
+          VERSION=$(cat version.txt)
+          echo "Updated version to: $VERSION"
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
       - name: Commit and push
         run: |
           git config --global user.email "saisailuhlaing@gmail.com"
           git config --global user.name "SaiHLu"
+
+          # Get current branch name
+          CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+          echo "Current branch is: $CURRENT_BRANCH"
+
+          # Add all changes including the version.txt file
           git add .
-          git commit -m "Generated protobuf files for all services"
+
+          # Commit with version in message
+          git commit -m "Generated protobuf files for all services [version: ${{ steps.version.outputs.version }}]"
+
+          # Push to main branch
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/SaiHLu/microservices-proto.git
-          git push origin main
+          git push origin $CURRENT_BRANCH
+
+          # Create and push tag with the new version
+          git tag -a ${{ steps.version.outputs.version }} -m "Release ${{ steps.version.outputs.version }}"
+          git push origin ${{ steps.version.outputs.version }}
